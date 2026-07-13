@@ -52,7 +52,7 @@ public class FlexibleLayout : LayoutGroup
                 break;
         }
 
-        // Validate
+        // Validate ( Avoid "divide by zero" )
         maxCols = Mathf.Max(maxCols, 1);
         maxRows = Mathf.Max(maxRows, 1);
 
@@ -72,6 +72,7 @@ public class FlexibleLayout : LayoutGroup
         for (int i = 0; i < rectChildren.Count; i++)
         {
             var child = rectChildren[i];
+
             int row = i / maxCols;
             int col = i % maxCols;
 

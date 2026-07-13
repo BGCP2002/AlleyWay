@@ -15,6 +15,6 @@ public class BuildingDefinition : ScriptableObject
     [SerializeField] internal float sellPrice;
 
     [Header("Mantainance")]
-    [SerializeField] internal float upKeepCost;
-    [SerializeField] internal float salePrice;
+    [SerializeField] internal float outcome;
+    [SerializeField] internal float income;
 }

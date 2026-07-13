@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class MenuOptionsHandler : MonoBehaviour
+public class MenuOptions : MonoBehaviour
 {
     [SerializeField] private GameObject menuOptionPrefab;
     [SerializeField] private Transform menuOptionParent;
@@ -16,7 +16,7 @@ public class MenuOptionsHandler : MonoBehaviour
         }
     }
 
-    internal void AddMenuOption(MenuOption optionData)
+    internal void AddMenuOption(MenuOptionData optionData)
     {
         GameObject newMenuOption = Instantiate(menuOptionPrefab, menuOptionParent);
 
@@ -29,7 +29,7 @@ public class MenuOptionsHandler : MonoBehaviour
         textBox.text = optionData.displayText;
     }
 }
-public class MenuOption
+public class MenuOptionData
 {
     internal string displayText = "";
     internal UnityAction onClickAction;

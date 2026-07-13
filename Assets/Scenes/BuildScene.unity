@@ -176,6 +176,38 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19913b2c238ad6041b760e333167b0c3, type: 3}
+--- !u!1 &55289744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55289745}
+  m_Layer: 0
+  m_Name: CameraPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &55289745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55289744}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 628618193}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!1001 &166917864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -386,13 +418,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287502977}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -30, y: 25, z: -30}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
+  m_Father: {fileID: 628618193}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &287502981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +639,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingHandler
   menu: {fileID: 1751373393}
+--- !u!1 &628618192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628618193}
+  m_Layer: 0
+  m_Name: CamRotation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &628618193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628618192}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 287502980}
+  m_Father: {fileID: 55289745}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &796454921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,6 +1176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1659831548}
   - component: {fileID: 1659831549}
+  - component: {fileID: 1659831550}
   m_Layer: 0
   m_Name: PlayerControl
   m_TagString: Untagged
@@ -1146,6 +1211,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16e6d3d0bc278974596c110ddc541f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  camControl: {fileID: 1659831550}
+--- !u!114 &1659831550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659831547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0eb59e3bab0aa34096fd1f45ff198ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  cameraPivot: {fileID: 55289745}
+  moveSpeed: 10
 --- !u!1 &1696164267
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,6 +1292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b469736a7c4fc4b8c631244ed0e60e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildMenu
+  startOpen: 0
   buildOptions: {fileID: 1751373398}
   buildingHandler: {fileID: 626757746}
   definitions:
@@ -1311,9 +1392,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1751373392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 142b152f228366e4ea702c4e5788be14, type: 3}
+  m_Script: {fileID: 11500000, guid: 008e0e61c58471248a9deea490ae49d2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuOptionsHandler
+  m_EditorClassIdentifier: Assembly-CSharp::MenuOptions
   menuOptionPrefab: {fileID: 513470817016643400, guid: 2797b64617d307245bb7790e720ed6e9, type: 3}
   menuOptionParent: {fileID: 249608794}
 --- !u!1001 &1852978949
@@ -1671,7 +1752,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 287502980}
+  - {fileID: 55289745}
   - {fileID: 796454924}
   - {fileID: 1176087308}
   - {fileID: 1060639898}

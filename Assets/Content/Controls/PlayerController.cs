@@ -4,16 +4,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private CameraController camControl;
+
     InputAction clickAction;
+    InputAction moveAction;
 
     private void Awake()
     {
         clickAction = InputSystem.actions["click"];
+        moveAction = InputSystem.actions["move"];
     }
 
     private void Update()
     {
         Click();
+        CameraMovement();
     }
 
     /// <summary>
@@ -39,6 +44,18 @@ public class PlayerController : MonoBehaviour
                     clickable.OnClick();
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Move the camera position manually
+    /// </summary>
+    private void CameraMovement()
+    {
+        if (moveAction.IsPressed())
+        {
+            Vector2 movement = moveAction.ReadValue<Vector2>();
+            camControl.MoveCamera(movement);
         }
     }
 }

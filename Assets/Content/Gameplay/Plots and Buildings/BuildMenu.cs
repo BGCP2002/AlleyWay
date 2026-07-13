@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class BuildMenu : Menu
 {
-    [SerializeField] private MenuOptionsHandler buildOptions;
+    [SerializeField] private MenuOptions buildOptions;
 
     [SerializeField] private BuildingHandler buildingHandler;
     [SerializeField] private List<BuildingDefinition> definitions = new();
@@ -19,7 +19,7 @@ public class BuildMenu : Menu
 
         if (hasBuilding)
         {
-            buildOptions.AddMenuOption(new MenuOption()
+            buildOptions.AddMenuOption(new MenuOptionData()
             {
                 displayText = "Demolish",
                 onClickAction = () => buildingHandler.RemoveBuilding()
@@ -29,7 +29,7 @@ public class BuildMenu : Menu
         {
             foreach (var definition in definitions)
             {
-                buildOptions.AddMenuOption(new MenuOption()
+                buildOptions.AddMenuOption(new MenuOptionData()
                 {
                     displayText = definition.displayName,
                     onClickAction = () => buildingHandler.AddBuilding(definition)

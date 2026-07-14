@@ -13,29 +13,28 @@ public class BuildMenu : Menu
     [SerializeField] private List<BuildingDefinition> definitions = new();
 
 
-    public void OpenMenu(bool hasBuilding)
+    public void OpenBuildOptions()
     {
         Open();
 
-        if (hasBuilding)
+        foreach (var definition in definitions)
         {
             buildOptions.AddMenuOption(new MenuOptionData()
             {
-                displayText = "Demolish",
-                onClickAction = () => buildingHandler.RemoveBuilding()
+                displayText = definition.displayName,
+                onClickAction = () => buildingHandler.AddBuilding(definition)
             });
         }
-        else
+    }
+    public void OpenDemolish()
+    {
+        Open();
+
+        buildOptions.AddMenuOption(new MenuOptionData()
         {
-            foreach (var definition in definitions)
-            {
-                buildOptions.AddMenuOption(new MenuOptionData()
-                {
-                    displayText = definition.displayName,
-                    onClickAction = () => buildingHandler.AddBuilding(definition)
-                });
-            }
-        }
+            displayText = "Demolish",
+            onClickAction = () => buildingHandler.RemoveBuilding()
+        });
     }
 
     public override void Open()

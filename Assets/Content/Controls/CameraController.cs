@@ -4,14 +4,19 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController Instance;
 
+    [Header("References")]
     [SerializeField] private Transform cameraPivot;
+    [SerializeField] private Transform cameraRotation;
+    [SerializeField] private Transform cameraZoom;
     public enum CameraMode
     { 
         Free,
         Focus,
     }
     private CameraMode mode;
+    [Header("Speeds")]
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float rotateSpeed;
     private CamFocusModeSettings focusModeSettings;
 
     private void Awake()
@@ -40,6 +45,12 @@ public class CameraController : MonoBehaviour
         moveVector *= Time.deltaTime * moveSpeed;
 
         cameraPivot.position += moveVector;
+    }    
+    internal void RotateCamera(float rotation)
+    {
+        rotation *= Time.deltaTime * rotateSpeed;
+
+        cameraRotation.eulerAngles = cameraRotation.eulerAngles + new Vector3(0f, rotation);
     }
 
     // Focus

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,7 +6,8 @@ public class BuildingHandler : MonoBehaviour
 {
     public static BuildingHandler Instance;
 
-    [SerializeField] private BuildMenu menu;
+    [SerializeField] private BuildMenu buildMenu;
+    [SerializeField] private BuildModMenu buildModMenu;
 
     private Plot selectedPlot;
 
@@ -20,7 +22,16 @@ public class BuildingHandler : MonoBehaviour
     internal void SelectPlot(Plot plot)
     {
         selectedPlot = plot;
-        menu.OpenMenu(plot.buildingInstance != null);
+        if (selectedPlot.buildingInstance != null)
+        {
+            buildModMenu.OpenModifiers(plot);
+            buildMenu.OpenDemolish();
+        }
+        else
+        {
+            buildModMenu.OpenModifiers(plot);
+            buildMenu.OpenBuildOptions();
+        }
     }
 
     /// <summary>
@@ -31,13 +42,15 @@ public class BuildingHandler : MonoBehaviour
         // -> Check Cost
 
         Building building = Instantiate(def.prefab, selectedPlot.buildingParent);
-        selectedPlot.buildingInstance = new BuildingInstance()
+
+        BuildingInstance newInstance = new BuildingInstance()
         {
             buildingDefinition = def,
             building = building,
         };
+        selectedPlot.AddBuilding(newInstance);
 
-        menu.Close();
+        CloseMenus();
     }
 
     /// <summary>
@@ -47,9 +60,20 @@ public class BuildingHandler : MonoBehaviour
     {
         // -> Refund
 
-        Destroy(selectedPlot.buildingInstance.building.gameObject);
-        selectedPlot.buildingInstance = null;
+        selectedPlot.RemoveBuilding();
 
-        menu.Close();
+        CloseMenus();
+    }
+
+
+    // Closing helpers
+    internal void Cancel()
+    {
+        CloseMenus();
+    }
+    internal void CloseMenus()
+    {
+        buildMenu.Close();
+        buildModMenu.Close();
     }
 }

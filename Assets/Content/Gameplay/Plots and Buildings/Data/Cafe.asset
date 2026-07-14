@@ -17,5 +17,13 @@ MonoBehaviour:
   prefab: {fileID: 5811322139360132208, guid: 7abb8528f60c95145b2ca111db789d39, type: 3}
   buildPrice: 10
   sellPrice: 8
-  upKeepCost: 5
-  salePrice: 6
+  outcome: 5
+  income: 10
+  startingModifiers: []
+  effectors:
+  - type: 0
+    effectorPercentage: -0.1
+  - type: 1
+    effectorPercentage: -0.1
+  - type: 6
+    effectorPercentage: 0.1

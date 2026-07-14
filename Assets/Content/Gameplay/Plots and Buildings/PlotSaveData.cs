@@ -1,7 +1,10 @@
 using UnityEngine;
 
+[System.Serializable]
 public class PlotSaveData
 {
-    internal Vector3 position;
-    internal BuildingRuntimeData runtimeData;
+    [SerializeField] internal Vector3 position;
+    [SerializeField] internal string buildingDefinitionID;
+    [SerializeField] internal PlotModifierModule modifierModule = new();
 }
+

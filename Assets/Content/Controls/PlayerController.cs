@@ -7,18 +7,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CameraController camControl;
 
     InputAction clickAction;
-    InputAction moveAction;
+    InputAction rotateCameraAction;
+    InputAction moveCameraAction;
 
     private void Awake()
     {
         clickAction = InputSystem.actions["click"];
-        moveAction = InputSystem.actions["move"];
+        moveCameraAction = InputSystem.actions["move"];
+        rotateCameraAction = InputSystem.actions["rotate"];
     }
 
     private void Update()
     {
         Click();
         CameraMovement();
+        CameraRotation();
     }
 
     /// <summary>
@@ -42,8 +45,12 @@ public class PlayerController : MonoBehaviour
                 if (hit.transform.TryGetComponent(out IClick clickable))
                 {
                     clickable.OnClick();
+                    return;
                 }
             }
+
+            // No target hit
+            BuildingHandler.Instance.Cancel();
         }
     }
 
@@ -52,10 +59,22 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void CameraMovement()
     {
-        if (moveAction.IsPressed())
+        if (moveCameraAction.IsPressed())
         {
-            Vector2 movement = moveAction.ReadValue<Vector2>();
+            Vector2 movement = moveCameraAction.ReadValue<Vector2>();
             camControl.MoveCamera(movement);
+        }
+    }   
+    
+    /// <summary>
+    /// Move the camera rotation manually
+    /// </summary>
+    private void CameraRotation()
+    {
+        if (rotateCameraAction.IsPressed())
+        {
+            float movement = rotateCameraAction.ReadValue<float>();
+            camControl.RotateCamera(movement);
         }
     }
 }

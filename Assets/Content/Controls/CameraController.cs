@@ -1,22 +1,32 @@
+using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public static CameraController Instance;
 
-    [Header("References")]
+    [Header("Position")]
     [SerializeField] private Transform cameraPivot;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float focusSpeed;
+
+    [Header("Rotation")]
     [SerializeField] private Transform cameraRotation;
+    [SerializeField] private float rotateSpeed;
+
+    [Header("Zoom")]
     [SerializeField] private Transform cameraZoom;
+    [SerializeField] private float scrollSpeed;
+    [SerializeField] private float zoomSpeed;
+    [SerializeField] private float zoomDistance;
+    [SerializeField] private Vector2 zoomRange;
+
     public enum CameraMode
     { 
         Free,
         Focus,
     }
     private CameraMode mode;
-    [Header("Speeds")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float rotateSpeed;
     private CamFocusModeSettings focusModeSettings;
 
     private void Awake()
@@ -34,6 +44,8 @@ public class CameraController : MonoBehaviour
                 FocusOnTarget();
                 break;
         }
+
+        ZoomCamera();
     }
 
     // Free
@@ -52,6 +64,29 @@ public class CameraController : MonoBehaviour
 
         cameraRotation.eulerAngles = cameraRotation.eulerAngles + new Vector3(0f, rotation);
     }
+    internal void ChangeZoom(float zoom)
+    {
+        zoomDistance = Mathf.Clamp(zoomDistance - zoom * scrollSpeed, zoomRange.x, zoomRange.y);
+    }
+    internal void ZoomCamera()
+    {
+        if (Camera.main.orthographic)
+        {
+            Camera.main.orthographicSize = Mathf.Lerp(
+                Camera.main.orthographicSize,
+                zoomDistance,
+                zoomSpeed * Time.deltaTime
+            );
+        }
+        else
+        {
+            cameraZoom.localPosition = Vector3.Lerp(
+                cameraZoom.localPosition,
+                new Vector3(0, 0, -zoomDistance),
+                zoomSpeed * Time.deltaTime
+            );
+        }
+    }
 
     // Focus
     internal void SetFocus(CamFocusModeSettings focusModeSettings)
@@ -64,8 +99,9 @@ public class CameraController : MonoBehaviour
         if (focusModeSettings == null) { mode = CameraMode.Free; return; }
         if (focusModeSettings.target == null) { mode = CameraMode.Free; return; }
 
-        cameraPivot.position = Vector3.Lerp(cameraPivot.position, focusModeSettings.target.position, Time.deltaTime * moveSpeed);
+        cameraPivot.position = Vector3.Lerp(cameraPivot.position, focusModeSettings.target.position, Time.deltaTime * focusSpeed);
     }
+
 }
 
 public class CamFocusModeSettings

@@ -108,7 +108,6 @@ public class PlotModifierModule
         {
             rev += def.income * stat.revenueMod;
         }
-        Debug.Log(rev);
         return rev - def.outcome;
     }
 

@@ -7,14 +7,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CameraController camControl;
 
     InputAction clickAction;
-    InputAction rotateCameraAction;
+
+    // Camera ( Free mode )
     InputAction moveCameraAction;
+    InputAction rotateCameraAction;
+    InputAction zoomCameraAction;
 
     private void Awake()
     {
         clickAction = InputSystem.actions["click"];
         moveCameraAction = InputSystem.actions["move"];
         rotateCameraAction = InputSystem.actions["rotate"];
+        zoomCameraAction = InputSystem.actions["scrollwheel"];
     }
 
     private void Update()
@@ -22,6 +26,7 @@ public class PlayerController : MonoBehaviour
         Click();
         CameraMovement();
         CameraRotation();
+        CameraZoom();
     }
 
     /// <summary>
@@ -41,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.Log(hit.transform.name);
+                Debug.Log($"Player clicked: {hit.collider.name}");
                 if (hit.transform.TryGetComponent(out IClick clickable))
                 {
                     clickable.OnClick();
@@ -73,8 +78,20 @@ public class PlayerController : MonoBehaviour
     {
         if (rotateCameraAction.IsPressed())
         {
-            float movement = rotateCameraAction.ReadValue<float>();
-            camControl.RotateCamera(movement);
+            float rotation = rotateCameraAction.ReadValue<float>();
+            camControl.RotateCamera(rotation);
+        }
+    }
+
+    /// <summary>
+    /// Move the camera zoom manually
+    /// </summary>
+    private void CameraZoom()
+    {
+        if (zoomCameraAction.IsPressed())
+        {
+            Vector2 zoom = zoomCameraAction.ReadValue<Vector2>();
+            camControl.ChangeZoom(zoom.y);
         }
     }
 }

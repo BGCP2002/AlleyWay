@@ -24,6 +24,9 @@ public class Plot : MonoBehaviour, IClick
         });
     }
 
+    /// <summary>
+    /// Assign building to plot and initialise modifiers
+    /// </summary>
     internal void AddBuilding(BuildingInstance buildingInstance)
     {
         this.buildingInstance = buildingInstance;
@@ -31,6 +34,9 @@ public class Plot : MonoBehaviour, IClick
         saveData.modifierModule.AddModifiersFromDef(this, buildingInstance.buildingDefinition);
     }
 
+    /// <summary>
+    /// Remove the modifiers, destroy the gameobject, and clear the instance
+    /// </summary>
     internal void RemoveBuilding()
     {
         saveData.modifierModule.RemoveModifiersFromDef(this, buildingInstance.buildingDefinition);

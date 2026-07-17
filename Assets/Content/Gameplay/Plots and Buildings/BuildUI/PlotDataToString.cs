@@ -3,6 +3,9 @@ using UnityEngine;
 
 public static class PlotDataToString
 {
+    /// <summary>
+    /// Retrieve the modifier data in a readable string
+    /// </summary>
     internal static string GetModifierString(Plot plot)
     {
         // Cache modifier module
@@ -45,12 +48,19 @@ public static class PlotDataToString
         return text;
     }
 
+    /// <summary>
+    /// Retrieve the revenue data in a readable string
+    /// </summary>
     internal static string GetRevenueString(Plot plot)
     {
         if (plot.buildingInstance == null) return "";
         float revenue = plot.saveData.modifierModule.GetRevenue(plot.buildingInstance.buildingDefinition);
         return $"Revenue: {revenue}";
     }
+
+    /// <summary>
+    /// Retrieve the building's name in a readable string
+    /// </summary>
     internal static string GetBuildingNameString(Plot plot)
     {
         if (plot.buildingInstance == null) return "Emply Plot";

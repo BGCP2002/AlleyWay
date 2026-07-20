@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 
     InputAction clickAction;
 
-    // Camera ( Free mode )
     InputAction moveCameraAction;
     InputAction rotateCameraAction;
     InputAction zoomCameraAction;
@@ -16,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         clickAction = InputSystem.actions["click"];
+
         moveCameraAction = InputSystem.actions["move"];
         rotateCameraAction = InputSystem.actions["rotate"];
         zoomCameraAction = InputSystem.actions["scrollwheel"];
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
         CameraZoom();
     }
 
+    // Mouse Input ============================================================================================
     /// <summary>
     /// Mouse Click on 3D components
     /// </summary>
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Camera ============================================================================================
     /// <summary>
     /// Move the camera position manually
     /// </summary>
@@ -78,8 +80,8 @@ public class PlayerController : MonoBehaviour
     {
         if (rotateCameraAction.IsPressed())
         {
-            float rotation = rotateCameraAction.ReadValue<float>();
-            camControl.RotateCamera(rotation);
+            Vector2 rotation = rotateCameraAction.ReadValue<Vector2>();
+            camControl.ChangeTargetRotation(rotation);
         }
     }
 
@@ -91,7 +93,7 @@ public class PlayerController : MonoBehaviour
         if (zoomCameraAction.IsPressed())
         {
             Vector2 zoom = zoomCameraAction.ReadValue<Vector2>();
-            camControl.ChangeZoom(zoom.y);
+            camControl.ChangeTargetZoom(zoom.y);
         }
     }
 }

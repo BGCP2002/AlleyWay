@@ -1,25 +1,31 @@
 using System;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class CameraController : MonoBehaviour
 {
     public static CameraController Instance;
+    [SerializeField] private Transform cameraPivot;
 
     [Header("Position")]
-    [SerializeField] private Transform cameraPivot;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float focusSpeed;
 
     [Header("Rotation")]
-    [SerializeField] private Transform cameraRotation;
-    [SerializeField] private float rotateSpeed;
+    private Vector2 targetRotation;
+    [SerializeField] private Vector2 pitchRange;
+    [SerializeField] private float rotateInputSpeed;
+    [SerializeField] private float rotateLerpSpeed;
 
     [Header("Zoom")]
     [SerializeField] private Transform cameraZoom;
-    [SerializeField] private float scrollSpeed;
-    [SerializeField] private float zoomSpeed;
-    [SerializeField] private float zoomDistance;
+    private float targetZoom;
     [SerializeField] private Vector2 zoomRange;
+    [SerializeField] private float zoomInputSpeed;
+    [SerializeField] private float zoomLerpSpeed;
+
+    [Header("Focus")]
+    private Transform focusTarget;
+    [SerializeField] private float focusSpeed;
 
     public enum CameraMode
     { 
@@ -27,11 +33,16 @@ public class CameraController : MonoBehaviour
         Focus,
     }
     private CameraMode mode;
-    private CamFocusModeSettings focusModeSettings;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        targetRotation = cameraPivot.eulerAngles;
+        targetZoom = Camera.main.orthographicSize; // < - Will need to change with perspective
     }
 
     private void Update()
@@ -45,67 +56,92 @@ public class CameraController : MonoBehaviour
                 break;
         }
 
+        RotateCamera();
         ZoomCamera();
     }
 
-    // Free
-    internal void MoveCamera(Vector3 vector)
+    // Othrographic Free Mode ==============================================================================
+    /// <summary>
+    /// Convert input vector to displacement vector and apply it to the camera pivot
+    /// </summary>
+    internal void MoveCamera(Vector3 inputVector)
     {
         mode = CameraMode.Free;
 
-        Vector3 moveVector = cameraPivot.forward * vector.y + cameraPivot.right * vector.x;
+        Vector3 right = Vector3.ProjectOnPlane(cameraPivot.right, Vector3.up).normalized;
+        Vector3 up = Vector3.ProjectOnPlane(cameraPivot.up, Vector3.up).normalized;
+
+        Vector3 moveVector = right * inputVector.x + up * inputVector.y;
+
         moveVector *= Time.deltaTime * moveSpeed;
-
         cameraPivot.position += moveVector;
-    }    
-    internal void RotateCamera(float rotation)
-    {
-        rotation *= Time.deltaTime * rotateSpeed;
+    }
 
-        cameraRotation.eulerAngles = cameraRotation.eulerAngles + new Vector3(0f, rotation);
-    }
-    internal void ChangeZoom(float zoom)
+    /// <summary>
+    /// Convert input float to rotation and apply it to the camera pivot
+    /// </summary>
+    internal void ChangeTargetRotation(Vector2 inputVector)
     {
-        zoomDistance = Mathf.Clamp(zoomDistance - zoom * scrollSpeed, zoomRange.x, zoomRange.y);
+        Vector2 rotation = rotateInputSpeed * Time.deltaTime * new Vector2(inputVector.y, inputVector.x);
+        targetRotation += rotation;
+        targetRotation.x = Mathf.Clamp(targetRotation.x, pitchRange.x, pitchRange.y);
     }
+    internal void RotateCamera()
+    {
+        cameraPivot.localRotation = Quaternion.Lerp(
+            cameraPivot.localRotation,
+            Quaternion.Euler(targetRotation),
+            rotateLerpSpeed * Time.deltaTime
+        );
+    }
+
+    /// <summary>
+    /// Modify the target distance / orthographic size
+    /// </summary>
+    internal void ChangeTargetZoom(float zoom)
+    {
+        targetZoom = Mathf.Clamp(targetZoom - zoom * zoomInputSpeed, zoomRange.x, zoomRange.y);
+    }
+    /// <summary>
+    /// Lerp the current zoom to approach the target zoom over time 
+    /// </summary>
     internal void ZoomCamera()
     {
         if (Camera.main.orthographic)
         {
             Camera.main.orthographicSize = Mathf.Lerp(
                 Camera.main.orthographicSize,
-                zoomDistance,
-                zoomSpeed * Time.deltaTime
+                targetZoom,
+                zoomLerpSpeed * Time.deltaTime
             );
         }
         else
         {
             cameraZoom.localPosition = Vector3.Lerp(
                 cameraZoom.localPosition,
-                new Vector3(0, 0, -zoomDistance),
-                zoomSpeed * Time.deltaTime
+                new Vector3(0, 0, -targetZoom),
+                zoomLerpSpeed * Time.deltaTime
             );
         }
     }
 
-    // Focus
-    internal void SetFocus(CamFocusModeSettings focusModeSettings)
+    // Focus Mode ===========================================================================================
+    /// <summary>
+    /// Set the focus target
+    /// </summary>
+    internal void SetFocus(Transform focusTarget)
     {
-        this.focusModeSettings = focusModeSettings;
+        this.focusTarget = focusTarget;
         mode = CameraMode.Focus;
     }
+
+    /// <summary>
+    /// Lerp the camera to centre on the focus target
+    /// </summary>
     private void FocusOnTarget()
     {
-        if (focusModeSettings == null) { mode = CameraMode.Free; return; }
-        if (focusModeSettings.target == null) { mode = CameraMode.Free; return; }
-
-        cameraPivot.position = Vector3.Lerp(cameraPivot.position, focusModeSettings.target.position, Time.deltaTime * focusSpeed);
+        if (focusTarget == null) { mode = CameraMode.Free; return; }
+        cameraPivot.position = Vector3.Lerp(cameraPivot.position, focusTarget.position, Time.deltaTime * focusSpeed);
     }
 
-}
-
-public class CamFocusModeSettings
-{
-    internal Transform target;
-    internal float moveSpeed;
 }

@@ -11,10 +11,7 @@ public class Building : MonoBehaviour, IClick
 
     public void OnClick()
     {
-        CameraController.Instance.SetFocus(new()
-        {
-            target = transform,
-        });
+        CameraController.Instance.SetFocus(transform);
         BuildingHandler.Instance.SelectPlot(parentPlot);
     }
 }

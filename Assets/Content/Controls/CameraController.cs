@@ -11,21 +11,21 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float moveSpeed;
 
     [Header("Rotation")]
-    private Vector2 targetRotation;
     [SerializeField] private Vector2 pitchRange;
     [SerializeField] private float rotateInputSpeed;
     [SerializeField] private float rotateLerpSpeed;
+    private Vector2 targetRotation;
 
     [Header("Zoom")]
     [SerializeField] private Transform cameraZoom;
-    private float targetZoom;
     [SerializeField] private Vector2 zoomRange;
     [SerializeField] private float zoomInputSpeed;
     [SerializeField] private float zoomLerpSpeed;
+    private float targetZoom;
 
     [Header("Focus")]
-    private Transform focusTarget;
     [SerializeField] private float focusSpeed;
+    private Transform focusTarget;
 
     public enum CameraMode
     { 

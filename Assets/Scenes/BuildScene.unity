@@ -1788,7 +1788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   cameraPivot: {fileID: 55289745}
-  moveSpeed: 20
+  moveSpeed: 25
   pitchRange: {x: 5, y: 80}
   rotateInputSpeed: 90
   rotateLerpSpeed: 15
@@ -1796,7 +1796,7 @@ MonoBehaviour:
   zoomRange: {x: 5, y: 40}
   zoomInputSpeed: 1
   zoomLerpSpeed: 15
-  focusSpeed: 8
+  focusSpeed: 5
 --- !u!1 &1696164267
 GameObject:
   m_ObjectHideFlags: 0

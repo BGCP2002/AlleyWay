@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+public class BuildMenu : Menu
+{
+    [SerializeField] private MenuOptions buildOptions;
+
+    [SerializeField] private BuildingHandler buildingHandler;
+    [SerializeField] private List<BuildingDefinition> definitions = new();
+
+
+    public void OpenBuildOptions()
+    {
+        Open();
+
+        foreach (var definition in definitions)
+        {
+            buildOptions.AddMenuOption(new MenuOptionData()
+            {
+                displayText = definition.displayName,
+                onClickAction = () => buildingHandler.AddBuilding(definition)
+            });
+        }
+    }
+    public void OpenDemolish()
+    {
+        Open();
+
+        buildOptions.AddMenuOption(new MenuOptionData()
+        {
+            displayText = "Demolish",
+            onClickAction = () => buildingHandler.RemoveBuilding()
+        });
+    }
+
+    public override void Open()
+    {
+        gameObject.SetActive(true);
+        buildOptions.ClearOptions();
+    }
+    public override void Close()
+    {
+        gameObject.SetActive(false);
+    }
+}

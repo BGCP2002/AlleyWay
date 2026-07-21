@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlotModifierModule
 {
     internal List<BuildingStat> stats { get; private set; } = new();
-    private bool isDirty = true;
 
     /// <summary>
     /// Adds all modifiers from a definition to its neighbours
@@ -30,8 +29,6 @@ public class PlotModifierModule
     /// </summary>
     internal void AddModifier(PlotModifier mod)
     {
-        isDirty = true;
-
         foreach (BuildingStat stat in stats)
         {
             if (stat.statType == mod.modType)
@@ -69,8 +66,6 @@ public class PlotModifierModule
     /// </summary>
     internal void RemoveModifier(PlotModifier mod)
     {
-        isDirty = true;
-
         foreach (BuildingStat stat in stats)
         {
             if (stat.statType == mod.modType)
@@ -92,8 +87,6 @@ public class PlotModifierModule
         {
             stat.GetRevenueMod(def);
         }
-
-        isDirty = false;
     }
 
     /// <summary>

@@ -78,7 +78,7 @@ public class CameraController : MonoBehaviour
     }
 
     /// <summary>
-    /// Convert input float to rotation and apply it to the camera pivot
+    /// Convert input float to target rotation
     /// </summary>
     internal void ChangeTargetRotation(Vector2 inputVector)
     {
@@ -86,6 +86,10 @@ public class CameraController : MonoBehaviour
         targetRotation += rotation;
         targetRotation.x = Mathf.Clamp(targetRotation.x, pitchRange.x, pitchRange.y);
     }
+
+    /// <summary>
+    /// Slerp to target rotation
+    /// </summary>
     internal void RotateCamera()
     {
         cameraPivot.localRotation = Quaternion.Lerp(

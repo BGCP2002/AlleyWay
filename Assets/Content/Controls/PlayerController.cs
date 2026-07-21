@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     [SerializeField] private CameraController camControl;
 
     InputAction clickAction;
@@ -12,8 +14,13 @@ public class PlayerController : MonoBehaviour
     InputAction rotateCameraAction;
     InputAction zoomCameraAction;
 
+    internal static Vector3 mouseScreenPosition {  get; private set; }
+    internal static Vector3 mouseWorldPosition { get; private set; }
+
     private void Awake()
     {
+        Instance = this;
+
         clickAction = InputSystem.actions["click"];
 
         moveCameraAction = InputSystem.actions["move"];
@@ -23,7 +30,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Click();
+        MouseDelta(); // < - Must be called before mouse interactions in this script at least once
+
+        MouseClick();
         CameraMovement();
         CameraRotation();
         CameraZoom();
@@ -33,7 +42,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Mouse Click on 3D components
     /// </summary>
-    private void Click()
+    private void MouseClick()
     {
         if (clickAction.WasPressedThisFrame())
         {
@@ -42,11 +51,12 @@ public class PlayerController : MonoBehaviour
                 return; // Mouse is over UI
             }
 
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
+                mouseWorldPosition = hit.point;
+
                 Debug.Log($"Player clicked: {hit.collider.name}");
                 if (hit.transform.TryGetComponent(out IClick clickable))
                 {
@@ -57,6 +67,20 @@ public class PlayerController : MonoBehaviour
 
             // No target hit
             BuildingHandler.Instance.Cancel();
+        }
+    }    
+    
+    /// <summary>
+    /// Retrieve the mouse screen and world positions
+    /// </summary>
+    private void MouseDelta()
+    {
+        mouseScreenPosition = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mouseScreenPosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            mouseWorldPosition = hit.point;
         }
     }
 

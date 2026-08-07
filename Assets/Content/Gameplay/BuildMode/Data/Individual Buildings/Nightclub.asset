@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 134c3f954f278794d80ca9c4195fc0e8, type: 3}
+  m_Name: Nightclub
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingDefinition
+  displayName: Nightclub
+  description: 
+  prefab: {fileID: 5410428232286537842, guid: 7abb8528f60c95145b2ca111db789d39, type: 3}
+  size: {x: 5, y: 5}
+  canRotate: 0
+  buildPrice: 10
+  sellPrice: 8
+  startingModifiers:
+  - modType: 0
+    value: 2
+    range: 12
+    source: from nearby Nightclub
+  - modType: 1
+    value: 3
+    range: 12
+    source: from nearby Nightclub
+  - modType: 3
+    value: 4
+    range: 12
+    source: from nearby Nightclub
+  outcome: 5
+  income: 10
+  effectors:
+  - type: 1
+    effectorPercentage: 0.3
+  - type: 3
+    effectorPercentage: 0.1
+  - type: 6
+    effectorPercentage: 0.1

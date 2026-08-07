@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using J_Func.UI;
 
 public class BuildModMenu : Menu
 {
@@ -9,18 +10,18 @@ public class BuildModMenu : Menu
 
     public void OpenModifiers(Plot plot)
     {
-        Open();
+        OpenMenu();
 
         displayNameTextBox.text = PlotDataToString.GetBuildingNameString(plot);
         revenueTextBox.text = PlotDataToString.GetRevenueString(plot);
         modifierTextBox.text = PlotDataToString.GetModifierString(plot);
     }
 
-    public override void Open()
+    protected override void OpenMenu()
     {
         gameObject.SetActive(true);
     }
-    public override void Close()
+    protected override void CloseMenu()
     { 
         gameObject.SetActive(false);
 

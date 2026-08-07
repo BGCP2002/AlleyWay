@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+using J_Func.UI;
 
 public class BuildMenu : Menu
 {
@@ -12,10 +11,9 @@ public class BuildMenu : Menu
     [SerializeField] private BuildingHandler buildingHandler;
     [SerializeField] private List<BuildingDefinition> definitions = new();
 
-
     public void OpenBuildOptions()
     {
-        Open();
+        OpenMenu();
 
         foreach (var definition in definitions)
         {
@@ -28,7 +26,7 @@ public class BuildMenu : Menu
     }
     public void OpenDemolish()
     {
-        Open();
+        OpenMenu();
 
         buildOptions.AddMenuOption(new MenuOptionData()
         {
@@ -37,12 +35,12 @@ public class BuildMenu : Menu
         });
     }
 
-    public override void Open()
+    protected override void OpenMenu()
     {
         gameObject.SetActive(true);
         buildOptions.ClearOptions();
     }
-    public override void Close()
+    protected override void CloseMenu()
     {
         gameObject.SetActive(false);
     }

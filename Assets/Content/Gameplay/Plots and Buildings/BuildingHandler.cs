@@ -41,16 +41,16 @@ public class BuildingHandler : MonoBehaviour
     {
         // -> Check Cost
 
-        Building building = Instantiate(def.prefab, selectedPlot.buildingParent);
+        //Building building = Instantiate(def.prefab, selectedPlot.buildingParent);
 
-        BuildingInstance newInstance = new BuildingInstance()
-        {
-            buildingDefinition = def,
-            building = building,
-        };
-        selectedPlot.AddBuilding(newInstance);
+        //BuildingInstance newInstance = new BuildingInstance()
+        //{
+        //    buildingDefinition = def,
+        //    building = building,
+        //};
+        //selectedPlot.AddBuilding(newInstance);
 
-        CloseMenus();
+        //CloseMenus();
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class BuildingHandler : MonoBehaviour
     }
     internal void CloseMenus()
     {
-        buildMenu.Close();
-        buildModMenu.Close();
+        buildMenu.SetOpen(false);
+        buildModMenu.SetOpen(false);
     }
 }

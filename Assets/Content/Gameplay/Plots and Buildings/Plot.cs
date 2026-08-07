@@ -17,7 +17,7 @@ public class Plot : MonoBehaviour, IClick
     /// </summary>
     public void OnClick()
     {
-        BuildingHandler.Instance.SelectPlot(this);
+        //BuildingHandler.Instance.SelectPlot(this);
         CameraController.Instance.SetFocus(transform);
     }
 

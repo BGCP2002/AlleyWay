@@ -1,18 +1,49 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Menu : MonoBehaviour
+namespace J_Func.UI
 {
-    [Header("Base Menu")]
-    [SerializeField] private bool startOpen;
-    private void Start()
+    /// <summary>
+    /// Menu abstract class. Contains Open, Close, Toggle, and Set.
+    /// </summary>
+    public abstract class Menu : MonoBehaviour
     {
-        if (startOpen)
-            Open();
-        else
-            Close();
-    }
+        [Header("Base Menu")]
+        [SerializeField] internal string menuName;
+        [SerializeField] private bool isOpen;
 
-    public abstract void Open();
-    public abstract void Close();
+        private void Start()
+        {
+            SetOpen(isOpen);
+        }
+
+        protected abstract void OpenMenu();
+        protected abstract void CloseMenu();
+        public virtual void ToggleMenu()
+        {
+            if (isOpen)
+            {
+                isOpen = false;
+                CloseMenu();
+            }
+            else
+            {
+                isOpen = true;
+                OpenMenu();
+            }
+        }
+        public virtual void SetOpen(bool state)
+        {
+            if (state)
+            {
+                isOpen = true;
+                OpenMenu();
+            }
+            else
+            {
+                isOpen = false;
+                CloseMenu();
+            }
+        }
+    }
 }

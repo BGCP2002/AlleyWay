@@ -76,6 +76,8 @@ public class PlayerInput : MonoBehaviour
 
         GameStateMachine.UpdateMouseInfo(mouseInfo);
 
+        if (mouseInfo.isOverUI) return;
+
         if (clickAction.WasPressedThisFrame())
         {
             Debug.Log("Clicked!");

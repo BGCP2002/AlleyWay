@@ -14,7 +14,7 @@ public class PlacementPreview : MonoBehaviour
     {
         placementGuide.gameObject.SetActive(true);
 
-        placementGuide.transform.localScale = new Vector3(def.size.x, 0, def.size.y);
+        placementGuide.transform.localScale = new Vector3(def.size.x, 1, def.size.y);
     }
 
     internal void UpdatePreview(PlacementData placementData)

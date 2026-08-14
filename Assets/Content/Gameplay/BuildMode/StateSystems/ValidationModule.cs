@@ -9,12 +9,9 @@ public class ValidationModule
     {
         List<Vector2Int> cells = new();
 
-        for (int x = 0; x < data.definition.size.x; x++)
+        foreach (Vector2Int offset in data.definition.GetPositions())
         {
-            for (int y = 0; y < data.definition.size.y; y++)
-            {
-                cells.Add(data.pivot + new Vector2Int(x, y));
-            }
+            cells.Add(data.mousePosition + offset);
         }
 
         return cells;

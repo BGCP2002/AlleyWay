@@ -15,7 +15,8 @@ MonoBehaviour:
   displayName: Nightclub
   description: 
   prefab: {fileID: 5410428232286537842, guid: 7abb8528f60c95145b2ca111db789d39, type: 3}
-  size: {x: 5, y: 5}
+  shape: 4
+  positions: []
   canRotate: 0
   buildPrice: 10
   sellPrice: 8

@@ -25,6 +25,8 @@ public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotati
     // Structure interaction =============================================================================================
     internal void PlacementEnter(StructureDefinition definition)
     {
+        PlacementPreview.DisablePreview();
+
         PlacementData = new()
         {
             definition = definition
@@ -53,7 +55,7 @@ public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotati
 
         // Create Object
         GameObject newObj = Instantiate(PlacementData.definition.prefab, structureParent);
-        newObj.transform.position = PlacementData.WorldPivot;
+        newObj.transform.position = PlacementData.MouseWorldPosition;
     }
     internal void RemoveStructure()
     {
@@ -65,8 +67,14 @@ public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotati
     {
         if (PlacementData == null) return;
 
-        Vector3Int pivotInt = J_Mathf.RoundToInt(info.WorldPosition);
-        PlacementData.pivot = new Vector2Int(pivotInt.x, pivotInt.z);
+        Vector3Int pivotInt;
+        if (PlacementData.definition is BuildingDefinition)
+            pivotInt = J_Mathf.RoundToInt(info.WorldPosition, 5);
+        else
+            pivotInt = J_Mathf.RoundToInt(info.WorldPosition);
+
+        PlacementData.mousePosition = new Vector2Int(pivotInt.x, pivotInt.z);
+
         PlacementPreview.UpdatePreview(PlacementData);
     }
 

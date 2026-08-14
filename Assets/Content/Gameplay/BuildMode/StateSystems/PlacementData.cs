@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlacementData
 {
-    internal Vector2Int pivot;
-    internal Vector3Int WorldPivot => new Vector3Int(pivot.x, 0, pivot.y);
+    internal Vector2Int mousePosition;
+    internal Vector3Int MouseWorldPosition => new Vector3Int(mousePosition.x, 0, mousePosition.y);
 
     internal int rotation;
 

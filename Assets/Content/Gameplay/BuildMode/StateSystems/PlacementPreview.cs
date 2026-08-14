@@ -3,22 +3,33 @@ using UnityEngine;
 
 public class PlacementPreview : MonoBehaviour
 {
-    [SerializeField] private MeshFilter placementGuide;
+    [SerializeField] private Transform pivot;
+    [SerializeField] private Transform offset;
+
+    [SerializeField] private GameObject prefab;
 
     internal void DisablePreview()
     {
-        placementGuide.gameObject.SetActive(false);
+        pivot.gameObject.SetActive(false);
+
+        foreach (Transform t in offset)
+        {
+            Destroy(t.gameObject);
+        }
     }
 
     internal void EnablePreview(StructureDefinition def)
     {
-        placementGuide.gameObject.SetActive(true);
+        pivot.gameObject.SetActive(true);
 
-        placementGuide.transform.localScale = new Vector3(def.size.x, 1, def.size.y);
+        foreach ( Vector2Int position in def.GetPositions() )
+        {
+            Instantiate(prefab, new Vector3(position.x, 0, position.y), Quaternion.identity, offset);
+        }
     }
 
     internal void UpdatePreview(PlacementData placementData)
     {
-        placementGuide.transform.position = placementData.WorldPivot;
+        pivot.transform.position = placementData.MouseWorldPosition;
     }
 }

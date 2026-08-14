@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d4c2d743d4987418954a197a1632ae, type: 3}
+  m_Name: 2x2
+  m_EditorClassIdentifier: Assembly-CSharp::DecorDefinition
+  displayName: 2x2
+  description: 
+  prefab: {fileID: 7955925383253891294, guid: 0fff690fda7cf3b49a8e5dd5c5123559, type: 3}
+  shape: 1
+  positions: []
+  canRotate: 0
+  buildPrice: 0
+  sellPrice: 0
+  startingModifiers: []

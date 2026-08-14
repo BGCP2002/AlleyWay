@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbdf0a3fb22303b4e886b19aff3baf05, type: 3}
   m_Name: All_Decor
   m_EditorClassIdentifier: Assembly-CSharp::StructureGroup
-  definitions: {fileID: 0}
+  definitions:
+  - {fileID: 11400000, guid: cd550eba9702f354cb15e0725db1a276, type: 2}
+  - {fileID: 11400000, guid: 179638c658cc6cc439b6593f98e8dc29, type: 2}
+  - {fileID: 11400000, guid: 8aa62657a906f604694284381ceea0e9, type: 2}

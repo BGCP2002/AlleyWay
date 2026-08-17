@@ -6,57 +6,67 @@ using TMPro;
 public class TimeManager : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private TextMeshProUGUI timeText; 
-    [SerializeField] private TextMeshProUGUI dateText; 
+    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI dateText;
 
-    [Header("Speed Buttons")]
+    [Header("Speed Controls")]
     [SerializeField] private Button pauseButton;
-    [SerializeField] private Button normalSpeedButton; // x1
-    [SerializeField] private Button doubleSpeedButton; // x2
-    [SerializeField] private Button quadSpeedButton;   // x4
+    [SerializeField] private Button cycleSpeedButton;
+    [SerializeField] private TextMeshProUGUI speedButtonText;
 
     [Header("Button Highlight Colors")]
-    [SerializeField] private Color activeColor = Color.white;                 
+    [SerializeField] private Color activeColor = Color.white;
     [SerializeField] private Color inactiveColor = new Color(0.4f, 0.4f, 0.4f);
 
     [Header("Base Time Settings")]
-    [SerializeField] private float baseGameSpeed = 60f; 
+    [SerializeField] private float baseGameSpeed = 60f;
 
-    
-    private float currentSpeedMultiplier = 1f;
+    [Header("Quota UI")]
+    [SerializeField] private Slider quotaProgressBar;
+    [SerializeField] private int quotaIntervalDays = 7;
 
-    
+    private readonly float[] speedMultipliers = { 1f, 2f, 4f };
+    private int currentSpeedIndex = 0;
+    private bool isPaused = false;
+
     private DateTime currentInGameTime = new DateTime(2026, 8, 15, 12, 00, 0);
+    private DateTime lastQuotaResetTime;
     public static event Action<DateTime> OnNewInGameDay;
     public DateTime CurrentDate => currentInGameTime;
-    private void Start() // Initialize button listeners and update the UI at the start of the game
-    {
-        
-        if (pauseButton) pauseButton.onClick.AddListener(() => SetGameSpeed(0f));
-        if (normalSpeedButton) normalSpeedButton.onClick.AddListener(() => SetGameSpeed(1f));
-        if (doubleSpeedButton) doubleSpeedButton.onClick.AddListener(() => SetGameSpeed(2f));
-        if (quadSpeedButton) quadSpeedButton.onClick.AddListener(() => SetGameSpeed(4f));
 
+    private void Start() // Initializes the time manager and sets up UI elements
+    {
+        lastQuotaResetTime = currentInGameTime; 
+
+        if (pauseButton) pauseButton.onClick.AddListener(TogglePause); 
+        if (cycleSpeedButton) cycleSpeedButton.onClick.AddListener(CycleToNextSpeed);
+
+        if (quotaProgressBar != null) 
+        {
+            quotaProgressBar.minValue = 0f;
+            quotaProgressBar.maxValue = 1f;
+        }
+
+        UpdateSpeedUI();
         UpdateButtonVisuals();
         UpdateUI();
     }
 
-    private void Update()
+    private void Update() // Advances in-game time and updates UI
     {
-        
-        if (currentSpeedMultiplier > 0f)
+        if (!isPaused)
         {
             AdvanceTime();
+            UpdateQuotaProgressBar();
             UpdateUI();
         }
     }
 
-    private void AdvanceTime() // Advance the in-game time based on the current speed multiplier and base game speed
+    private void AdvanceTime() // Advances the in-game time based on the current speed and checks for new days
     {
         int previousDay = currentInGameTime.Day;
 
-        
-        float effectiveSpeed = baseGameSpeed * currentSpeedMultiplier;
+        float effectiveSpeed = baseGameSpeed * speedMultipliers[currentSpeedIndex];
         currentInGameTime = currentInGameTime.AddSeconds(Time.deltaTime * effectiveSpeed);
 
         if (currentInGameTime.Day != previousDay)
@@ -65,39 +75,85 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    
-    public void SetGameSpeed(float multiplier) // Set the game speed multiplier and update button visuals
+    private void UpdateQuotaProgressBar() // Updates the quota progress bar based on the elapsed time since the last reset
     {
-        currentSpeedMultiplier = multiplier;
+        if (quotaProgressBar == null) return;
 
+        TimeSpan timeElapsed = currentInGameTime - lastQuotaResetTime;
+
+        
+        if (timeElapsed.TotalDays >= quotaIntervalDays)
+        {
+            lastQuotaResetTime = currentInGameTime;
+            timeElapsed = TimeSpan.Zero;
+        }
+
+        double elapsedSeconds = timeElapsed.TotalSeconds;
+        double totalSecondsInCycle = TimeSpan.FromDays(quotaIntervalDays).TotalSeconds;
+
+        quotaProgressBar.value = Mathf.Clamp01((float)(elapsedSeconds / totalSecondsInCycle));
+    }
+    public void TogglePause() // Toggles the pause state of the game and updates button visuals
+    {
+        isPaused = !isPaused;
         UpdateButtonVisuals();
     }
 
-    private void UpdateUI() // Update the time and date display
+    public void CycleToNextSpeed() // Cycles through the speed multipliers and updates the UI 
+    {
+        
+        if (isPaused)
+        {
+            isPaused = false;
+        }
+
+        currentSpeedIndex = (currentSpeedIndex + 1) % speedMultipliers.Length;
+        UpdateSpeedUI();
+        UpdateButtonVisuals();
+    }
+
+    private void UpdateSpeedUI() // Updates the speed button text based on the current speed index
+    {
+        if (speedButtonText == null) return;
+
+        
+        switch (currentSpeedIndex)
+        {
+            case 0:
+                speedButtonText.text = ">";      // Normal Speed (1x)
+                break;
+            case 1:
+                speedButtonText.text = ">>";    // Double Speed (2x)
+                break;
+            case 2:
+                speedButtonText.text = ">>>";   // Quad Speed (4x)
+                break;
+        }
+    }
+
+    private void UpdateUI() 
     {
         if (timeText != null)
-            timeText.text = currentInGameTime.ToString("HH:mm tt");
+            timeText.text = currentInGameTime.ToString("hh:mm");
 
         if (dateText != null)
             dateText.text = currentInGameTime.ToString("dd/MM/yyyy");
     }
 
-    private void UpdateButtonVisuals() // Update the button colors based on the current speed multiplier
+    private void UpdateButtonVisuals()
     {
-        SetButtonColor(pauseButton, currentSpeedMultiplier == 0f);
-        SetButtonColor(normalSpeedButton, currentSpeedMultiplier == 1f);
-        SetButtonColor(doubleSpeedButton, currentSpeedMultiplier == 2f);
-        SetButtonColor(quadSpeedButton, currentSpeedMultiplier == 4f);
+        // Pause button is activeColor when paused, inactiveColor (greyed out) when running
+        SetButtonColor(pauseButton, isPaused);
+
+        // Speed button is inactiveColor (greyed out) when paused, activeColor when running
+        SetButtonColor(cycleSpeedButton, !isPaused);
     }
 
-    private void SetButtonColor(Button btn, bool isActive)
+    private void SetButtonColor(Button btn, bool isActive) 
     {
         if (btn == null) return;
-
-        // Ensure the button remains clickable
         btn.interactable = true;
 
-        // Set image color to active (light) or inactive (dark)
         Image btnImage = btn.GetComponent<Image>();
         if (btnImage != null)
         {

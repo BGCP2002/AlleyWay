@@ -8,6 +8,7 @@ public class TimeManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI dateText;
+    [SerializeField] private TextMeshProUGUI weekCountText;
 
     [Header("Speed Controls")]
     [SerializeField] private Button pauseButton;
@@ -29,10 +30,19 @@ public class TimeManager : MonoBehaviour
     private int currentSpeedIndex = 0;
     private bool isPaused = false;
 
-    private DateTime currentInGameTime = new DateTime(2026, 8, 15, 12, 00, 0);
+    private DateTime startDate; 
+    private DateTime currentInGameTime;
     private DateTime lastQuotaResetTime;
     public static event Action<DateTime> OnNewInGameDay;
     public DateTime CurrentDate => currentInGameTime;
+
+    private void Awake()
+    {
+        // Enforce base start date strictly on initialization
+        startDate = new DateTime(2026, 8, 15, 12, 0, 0);
+        currentInGameTime = startDate;
+        lastQuotaResetTime = startDate;
+    }
 
     private void Start() // Initializes the time manager and sets up UI elements
     {
@@ -138,6 +148,12 @@ public class TimeManager : MonoBehaviour
 
         if (dateText != null)
             dateText.text = currentInGameTime.ToString("dd/MM/yyyy");
+
+        if (weekCountText != null)
+        {
+            int currentWeek = ((int)(currentInGameTime - startDate).TotalDays / 7) + 1;
+            weekCountText.text = $"Week {currentWeek}";
+        }
     }
 
     private void UpdateButtonVisuals()

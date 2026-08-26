@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4f9109f6ddc90514a816b055b61ee365
+guid: 66063c60697b5c94fb36f04c7125f156
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639195430217481667
+  platformSettingsDirtyTick: 639233432100794079
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,30 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Frame_0
+  - name: HazardLines
     originalName: 
-    pivot: {x: 0.5, y: -0.0625}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 48
-      width: 32
-      height: 32
-    spriteID: 1dc7b0c3c076afa40bb9e6589b697811
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 48}
-  - name: Frame_1
-    originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -158,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 36
-      height: 36
-    spriteID: f6b1899bb885fdf4db449959110bf81c
+      width: 32
+      height: 32
+    spriteID: a8f10f7fcf067c540bc7012a63ba6d9a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -170,19 +149,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: UI_SelectedPlot_0
+  - name: HazardLines_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
-    border: {x: 3, y: 3, z: 3, w: 3}
+    border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 3
-      y: 3
-      width: 38
-      height: 38
-    spriteID: a006c493740fd6c489eaa4f9130e5ddd
+      x: 4
+      y: 4
+      width: 32
+      height: 32
+    spriteID: 0f4cd34cc7ba6354eaf10db335c5f20f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -195,34 +174,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 1376221785
+      value0: 947828789
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: UI_SelectedPlot
+    name: HazardLines
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Frame_0
+    - name: HazardLines
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 3
-        y: 3
+        x: 16
+        y: 16
         width: 32
         height: 32
-      spriteId: 1dc7b0c3c076afa40bb9e6589b697811
-    - name: Frame_1
-      frameIndex: 1
-      additiveSortOrder: 0
-      cellRect:
-        x: 1
-        y: 1
-        width: 36
-        height: 36
-      spriteId: f6b1899bb885fdf4db449959110bf81c
+      spriteId: a8f10f7fcf067c540bc7012a63ba6d9a
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -268,5 +238,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 38, y: 38}
-  previousTextureSize: {x: 64, y: 128}
+  canvasSize: {x: 64, y: 64}
+  previousTextureSize: {x: 64, y: 64}

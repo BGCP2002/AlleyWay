@@ -28,8 +28,19 @@ public class PlacementPreview : MonoBehaviour
         }
     }
 
+    internal void SetColor(Color color)
+    {
+        foreach (Transform t in offset)
+        {
+            t.GetComponentInChildren<SpriteRenderer>().color = color;
+        }
+    }
+
     internal void UpdatePreview(PlacementData placementData)
     {
-        pivot.transform.position = placementData.MouseWorldPosition;
+        pivot.transform.position = placementData.MouseGridPosition;
+
+        if(placementData.isValid ) { SetColor(Color.white); }
+        else { SetColor(Color.red); }
     }
 }

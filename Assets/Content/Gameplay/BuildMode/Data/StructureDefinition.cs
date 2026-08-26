@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CreateAssetMenu (menuName = "Structure/Definition")]
-public class StructureDefinition : ScriptableObject
+public abstract class StructureDefinition : ScriptableObject
 {
     [Header("Information")]
     [SerializeField] internal string displayName;
@@ -20,7 +19,7 @@ public class StructureDefinition : ScriptableObject
     [SerializeField] internal float sellPrice;
 
     [Header("Effectors")]
-    [SerializeField] internal List<PlotModifier> startingModifiers;
+    [SerializeField] internal List<StructureAreaModifier> startingModifiers;
 
     internal List<Vector2Int> GetPositions()
     {
@@ -50,6 +49,8 @@ public class StructureDefinition : ScriptableObject
 
         return result;
     }
+
+    internal abstract StructureInstance CreateInstance();
 }
 
 public class StructureInstance

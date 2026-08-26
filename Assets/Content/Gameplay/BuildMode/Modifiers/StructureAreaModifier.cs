@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class PlotModifier
+public class StructureAreaModifier
 {
     [SerializeField] internal BuildingStatType modType;
     [SerializeField] internal float value = 0;

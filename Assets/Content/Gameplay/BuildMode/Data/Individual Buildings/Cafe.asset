@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingDefinition
   displayName: Cafe
   description: 
-  prefab: {fileID: 5410428232286537842, guid: 7abb8528f60c95145b2ca111db789d39, type: 3}
+  prefab: {fileID: 7955925383253891294, guid: 43b774b33bdf4284f9ab1463ec413860, type: 3}
   shape: 4
   positions: []
   canRotate: 0

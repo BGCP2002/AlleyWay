@@ -2,7 +2,6 @@ using J_Func.Math;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotationInput
 {
@@ -13,7 +12,6 @@ public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotati
     [Header("Runtime Storage")]
     [SerializeField] private Transform structureParent;
     private ValidationModule ValidationHandler = new();
-    private StructureDataModule structureDataModule = new();
     private PlacementData PlacementData;
 
     private void Awake()
@@ -43,19 +41,18 @@ public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotati
     internal void AttemptPlacement()
     {
         if (PlacementData == null) return;
+        if (!PlacementData.isValid) return;
 
-        // Check valid placement position
         List<Vector2Int> list = ValidationHandler.GetOccupiedCells(PlacementData);
-        if (!ValidationHandler.ValidateCells(list)) return;
         ValidationHandler.AddCells(list);
 
         // Create Instance
-        //StructureInstance newInstance = definition.GreateInstance();
-        //structureDataModule.structureInstances.Add(pos, instance);
+        StructureInstance newInstance = PlacementData.definition.CreateInstance();
+        RunManager.StructureData.AddStructure(newInstance, PlacementData.MouseDataPosition);
 
         // Create Object
         GameObject newObj = Instantiate(PlacementData.definition.prefab, structureParent);
-        newObj.transform.position = PlacementData.MouseWorldPosition;
+        newObj.transform.position = PlacementData.MouseGridPosition;
     }
     internal void RemoveStructure()
     {
@@ -74,6 +71,22 @@ public class PlacementHandler : MonoBehaviour, IMouseInput, IClickInput, IRotati
             pivotInt = J_Mathf.RoundToInt(info.WorldPosition);
 
         PlacementData.mousePosition = new Vector2Int(pivotInt.x, pivotInt.z);
+
+        List<Vector2Int> list = ValidationHandler.GetOccupiedCells(PlacementData);
+
+        PlacementData.isValid = true;
+        if (!ValidationHandler.ValidateCells(list))
+        {
+            PlacementData.isValid = false;
+        }
+
+        if (PlacementData.definition is BuildingDefinition)
+        {
+            if (Mathf.Abs(PlacementData.MouseGridPosition.z) != 10)
+            {
+                PlacementData.isValid = false;
+            }
+        }
 
         PlacementPreview.UpdatePreview(PlacementData);
     }

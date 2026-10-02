@@ -1,16 +1,12 @@
+using System;
 using UnityEngine;
 
-public class ClickBox : MonoBehaviour, IClick
+public class ClickBox : MonoBehaviour, IClickInput
 {
-    private IClick clickable;
-
-    private void Awake()
-    {
-        clickable = transform.parent.GetComponentInParent<IClick>();
-    }
+    public event Action OnCLick;
 
     public void OnClick()
     {
-        clickable?.OnClick();
+        OnCLick?.Invoke();
     }
 }
